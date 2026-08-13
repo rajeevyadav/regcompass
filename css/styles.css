@@ -1,0 +1,488 @@
+/* ============================================================
+   RegCompass — FDA & EU MDR Regulatory Navigator
+   Stylesheet
+   ------------------------------------------------------------
+   Design: clinical light theme (default) with a dark theme.
+   Themes are driven entirely by CSS custom properties set on
+   <html data-theme="light|dark">. No frameworks, no build step.
+   ============================================================ */
+
+/* ---------- 1. Design tokens (light theme, default) ---------- */
+:root {
+  /* Surfaces */
+  --color-bg: #f4f7fb;            /* page background          */
+  --color-surface: #ffffff;       /* cards                    */
+  --color-surface-alt: #eef2f8;   /* inputs, nested panels    */
+  --color-border: #d7dfea;
+
+  /* Text */
+  --color-text: #182437;
+  --color-text-muted: #5a6b82;
+  --color-heading: #10203a;
+
+  /* Brand */
+  --color-primary: #16559c;       /* actions, active states   */
+  --color-primary-strong: #0f4076;
+  --color-primary-soft: #e3edf9;
+
+  /* Market accents */
+  --color-fda: #0369a1;           /* FDA (US)                 */
+  --color-fda-soft: #e0f2fe;
+  --color-eu: #5b21b6;            /* EU MDR                   */
+  --color-eu-soft: #ede9fe;
+
+  /* Status */
+  --color-ok: #0f7b52;
+  --color-ok-soft: #e2f5ec;
+  --color-warn: #92610a;
+  --color-warn-soft: #fdf3dc;
+  --color-danger: #b3372e;
+  --color-danger-soft: #fde8e6;
+
+  /* Shape & type */
+  --radius: 10px;
+  --radius-sm: 7px;
+  --shadow-card: 0 1px 2px rgba(16, 32, 58, .06), 0 1px 8px rgba(16, 32, 58, .05);
+  --font-body: 'Inter', 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+}
+
+/* ---------- 1b. Dark theme overrides ---------- */
+html[data-theme="dark"] {
+  --color-bg: #0d1524;
+  --color-surface: #141f33;
+  --color-surface-alt: #1b2942;
+  --color-border: #2b3a56;
+
+  --color-text: #e6edf7;
+  --color-text-muted: #94a5bd;
+  --color-heading: #f2f6fc;
+
+  --color-primary: #4d8fdb;
+  --color-primary-strong: #6ea6e8;
+  --color-primary-soft: #1a3050;
+
+  --color-fda: #4fc0f0;
+  --color-fda-soft: #0c3a55;
+  --color-eu: #b79df3;
+  --color-eu-soft: #2c1e56;
+
+  --color-ok: #46c78f;
+  --color-ok-soft: #10301f;
+  --color-warn: #e8b74a;
+  --color-warn-soft: #33290e;
+  --color-danger: #ef7b70;
+  --color-danger-soft: #391716;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, .35);
+}
+
+/* ---------- 2. Base ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.55;
+  font-size: 15px;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background .25s, color .25s;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: .8em;
+  background: var(--color-surface-alt);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 14px 56px; }
+
+/* ---------- 3. Header ---------- */
+.top {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 12px 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  box-shadow: var(--shadow-card);
+}
+
+.top-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.brand { display: flex; align-items: center; gap: 11px; }
+
+.brand-logo { width: 40px; height: 40px; flex: 0 0 auto; }
+
+.brand h1 {
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--color-heading);
+}
+
+.brand .tagline {
+  font-size: .72rem;
+  color: var(--color-text-muted);
+  display: block;
+  margin-top: 1px;
+}
+
+.top-actions { display: flex; align-items: center; gap: 8px; }
+
+/* Windows download button (header) */
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 13px;
+  font-family: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-download:hover { background: var(--color-primary-strong); }
+
+/* Theme toggle button */
+.theme-btn {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.theme-btn:hover { border-color: var(--color-primary); }
+
+/* Compact legal disclaimer in the header */
+.disclaimer {
+  background: var(--color-warn-soft);
+  border: 1px solid color-mix(in srgb, var(--color-warn) 35%, transparent);
+  color: var(--color-warn);
+  font-size: .7rem;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  max-width: 400px;
+  line-height: 1.4;
+}
+
+/* ---------- 4. Market selector (FDA / EU / Both) ---------- */
+.market {
+  display: flex;
+  gap: 6px;
+  margin: 12px auto 0;
+  max-width: 1100px;
+}
+
+.market button {
+  flex: 1;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+  background: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: .82rem;
+  cursor: pointer;
+  transition: color .15s, background .15s;
+}
+.market button.on { background: var(--color-surface); color: var(--color-heading); }
+.market button[data-market="fda"].on  { box-shadow: inset 0 3px 0 var(--color-fda);  color: var(--color-fda); }
+.market button[data-market="eu"].on   { box-shadow: inset 0 3px 0 var(--color-eu);   color: var(--color-eu); }
+.market button[data-market="both"].on { box-shadow: inset 0 3px 0 var(--color-primary); color: var(--color-primary); }
+
+/* ---------- 5. Section navigation ---------- */
+.nav {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 8px 0 6px;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+
+.nav button {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: .78rem;
+  font-weight: 600;
+  padding: 6px 11px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.nav button:hover { color: var(--color-text); background: var(--color-surface-alt); }
+.nav button.on { color: #fff; background: var(--color-primary); }
+
+/* ---------- 6. Panels & cards ---------- */
+.panel { display: none; padding-top: 14px; }
+.panel.on { display: block; }
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.card h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin-bottom: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+
+.card h3 {
+  font-size: .88rem;
+  font-weight: 700;
+  margin: 14px 0 6px;
+  color: var(--color-heading);
+}
+
+.h-fda { color: var(--color-fda) !important; }
+.h-eu  { color: var(--color-eu) !important; }
+
+/* Small pill badges next to headings */
+.badge {
+  font-size: .62rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  letter-spacing: .02em;
+}
+.badge.fda { background: var(--color-fda-soft); color: var(--color-fda); }
+.badge.eu  { background: var(--color-eu-soft);  color: var(--color-eu); }
+
+.sm { font-size: .76rem; color: var(--color-text-muted); }
+
+/* ---------- 7. Forms ---------- */
+label {
+  display: block;
+  font-weight: 600;
+  font-size: .83rem;
+  margin: 10px 0 4px;
+  color: var(--color-text);
+}
+
+select,
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 9px 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: .87rem;
+}
+select:focus, input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+
+/* Radio / checkbox groups */
+.choice-row, .choice-col {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 14px;
+}
+.choice-col { flex-direction: column; gap: 4px; }
+
+.choice-row label, .choice-col label {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-weight: 500;
+  font-size: .83rem;
+  margin: 0;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+input[type="radio"], input[type="checkbox"] {
+  width: auto;
+  margin-top: 3px;
+  accent-color: var(--color-primary);
+}
+
+/* Scrollable checklist (EU rules) */
+.checklist-scroll {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 8px;
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+/* ---------- 8. Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 9px 15px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: .84rem;
+  cursor: pointer;
+  background: var(--color-primary);
+  color: #fff;
+  margin: 8px 4px 2px 0;
+  transition: background .15s;
+}
+.btn:hover { background: var(--color-primary-strong); }
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+.btn-ghost:hover { background: var(--color-surface-alt); border-color: var(--color-primary); color: var(--color-text); }
+
+/* ---------- 9. Results & notes ---------- */
+.result {
+  margin-top: 12px;
+  padding: 12px 13px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-alt);
+  border-left: 4px solid var(--color-primary);
+  font-size: .85rem;
+}
+.result.ok   { border-color: var(--color-ok);     background: var(--color-ok-soft); }
+.result.warn { border-color: var(--color-warn);   background: var(--color-warn-soft); }
+.result.bad  { border-color: var(--color-danger); background: var(--color-danger-soft); }
+
+.note {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: .8rem;
+  margin: 8px 0;
+  color: var(--color-text);
+}
+
+/* Link chips to official sources */
+.links a {
+  display: inline-block;
+  margin: 2px 5px 2px 0;
+  padding: 4px 9px;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: .76rem;
+  font-weight: 500;
+}
+.links a:hover { border-color: var(--color-primary); }
+
+/* ---------- 10. Layout helpers ---------- */
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 9px; }
+.cols   { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 700px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 800px) { .cols   { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- 11. Tables (GSPR matrix) ---------- */
+table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+th, td {
+  padding: 6px 5px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+th { color: var(--color-primary); font-weight: 700; background: var(--color-surface-alt); }
+
+.table-input {
+  width: 100%;
+  padding: 3px 4px;
+  font-size: .75rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+/* Progress bar */
+.progress-track {
+  height: 6px;
+  background: var(--color-surface-alt);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 6px 0;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--color-ok);
+  transition: width .25s;
+}
+
+/* ---------- 12. Install hint & footer ---------- */
+.install-hint {
+  display: none;
+  background: var(--color-fda-soft);
+  border: 1px solid color-mix(in srgb, var(--color-fda) 40%, transparent);
+  color: var(--color-fda);
+  padding: 9px 13px;
+  border-radius: var(--radius-sm);
+  font-size: .78rem;
+  margin: 10px 0 2px;
+}
+
+footer {
+  text-align: center;
+  padding: 18px 12px;
+  font-size: .7rem;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+/* ---------- 13. Print (Report → PDF) ---------- */
+@media print {
+  .top, .nav, .btn, .btn-ghost, footer, .market, .install-hint { display: none !important; }
+  body { background: #fff; color: #111; }
+  .card { border: 1px solid #ccc; background: #fff; color: #111; box-shadow: none; }
+  .panel { display: block !important; }
+}

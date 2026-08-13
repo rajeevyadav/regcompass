@@ -1,0 +1,17 @@
+# Keeps Electron/electron-builder and GitHub Actions versions patched
+# automatically. Dependabot opens a PR when a dependency has a security
+# fix or a new version available — nothing runs unless you merge it.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels: ["dependencies"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "ci"]

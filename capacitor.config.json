@@ -1,0 +1,12 @@
+{
+  "appId": "com.rajeevyadav.regcompass",
+  "appName": "RegCompass",
+  "webDir": "www",
+  "backgroundColor": "#f4f7fb",
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "contentInset": "automatic"
+  }
+}

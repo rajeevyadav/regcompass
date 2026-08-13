@@ -1,0 +1,4 @@
+# Every file requires review/approval from the repo owner before merging.
+# GitHub enforces this automatically once branch protection on `main`
+# has "Require review from Code Owners" turned on (see docs/PUBLISHING.md).
+* @rajeevyadav
