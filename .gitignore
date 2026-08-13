@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+www/
+
+# Capacitor native projects are generated locally with `npx cap add`
+android/
+ios/
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Python cache (icon generator)
+__pycache__/

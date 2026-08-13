@@ -1,0 +1,56 @@
+{
+  "name": "regcompass",
+  "productName": "RegCompass",
+  "version": "1.0.2",
+  "description": "RegCompass — free FDA & EU MDR regulatory navigator for medical devices. Rule-based, offline, no AI, no data collection.",
+  "author": "Valk <valkbarn@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/rajeevyadav/regcompass",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "web": "npx serve .",
+    "dist:win": "electron-builder --win",
+    "cap:copy": "node scripts/make-www.js",
+    "cap:sync": "npm run cap:copy && npx cap sync",
+    "cap:android": "npm run cap:sync && npx cap open android",
+    "cap:ios": "npm run cap:sync && npx cap open ios"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.valkbarn.regcompass",
+    "productName": "RegCompass",
+    "files": [
+      "electron/**/*",
+      "index.html",
+      "css/**/*",
+      "js/**/*",
+      "icons/*.png",
+      "manifest.webmanifest"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "deleteAppDataOnUninstall": true,
+      "artifactName": "RegCompass-Setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "RegCompass-Portable.${ext}"
+    },
+    "publish": {
+      "provider": "github"
+    }
+  }
+}

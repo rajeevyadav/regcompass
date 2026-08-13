@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#16559c">
+<meta name="description" content="RegCompass — free, offline FDA & EU MDR regulatory navigator for medical devices: classification, SaMD/AI, EU AI Act, cybersecurity, human factors, GSPR and EUDAMED readiness. 100% rule-based, no AI, no data collection.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="RegCompass">
+<title>RegCompass — FDA &amp; EU MDR Regulatory Navigator</title>
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <!-- Compass logo (inline SVG so it works offline and scales crisply) -->
+      <svg class="brand-logo" viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#1d6fc4"/><stop offset="1" stop-color="#0f4076"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#lg)"/>
+        <circle cx="32" cy="32" r="20" fill="none" stroke="#ffffff" stroke-opacity=".85" stroke-width="3"/>
+        <polygon points="32,15 37,32 32,49 27,32" fill="#ffffff"/>
+        <polygon points="32,15 37,32 32,32" fill="#a8cdf0"/>
+        <circle cx="32" cy="32" r="3.2" fill="#0f4076" stroke="#fff" stroke-width="1.5"/>
+      </svg>
+      <div>
+        <h1>RegCompass</h1>
+        <span class="tagline">FDA &amp; EU MDR Regulatory Navigator · SaMD · AI Act · Cyber · HF</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="btn btn-download" id="windowsDownload"
+         href="https://github.com/rajeevyadav/regcompass/releases/latest/download/RegCompass-Setup.exe"
+         target="_blank" rel="noopener" title="Downloads the latest signed Windows installer from GitHub Releases">⬇ Windows</a>
+      <button class="theme-btn" id="themeToggle" aria-label="Switch color theme">🌙 Dark</button>
+      <div class="disclaimer"><strong>Decision-support only.</strong> Does not create compliance or replace agency / Notified Body assessment. Verify against official sources.</div>
+    </div>
+  </div>
+
+  <div class="wrap" style="padding-bottom:0">
+    <!-- Market selector: FDA / EU MDR / side-by-side -->
+    <div class="market" id="market" role="tablist" aria-label="Market">
+      <button data-market="fda" class="on">FDA (US)</button>
+      <button data-market="eu">EU MDR</button>
+      <button data-market="both">Both + Compare</button>
+    </div>
+
+    <!-- Section navigation -->
+    <nav class="nav" id="nav" aria-label="Sections">
+      <button class="on" data-panel="classification">Classification</button>
+      <button data-panel="samd">SaMD / AI</button>
+      <button data-panel="aiact">EU AI Act</button>
+      <button data-panel="cyber">Cybersecurity</button>
+      <button data-panel="hf">Human Factors</button>
+      <button data-panel="gspr">GSPR (EU)</button>
+      <button data-panel="eudamed">EUDAMED</button>
+      <button data-panel="report">Report</button>
+      <button data-panel="about">About</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="install-hint" id="installHint">
+  <strong>Install as an app:</strong> on a phone use “Add to Home Screen”; on desktop Chrome/Edge use the install icon in the address bar.
+</div>
+
+<!-- ================= CLASSIFICATION ================= -->
+<section id="classification" class="panel on">
+  <div class="card">
+    <h2>Classification Engine <span class="badge">Dual-market</span></h2>
+    <p class="sm">The FDA and EU MDR engines are independent. Use the market selector above. “Both + Compare” shows results side-by-side with a divergence summary.</p>
+
+    <!-- ---------- FDA engine ---------- -->
+    <div id="fdaBlock">
+      <h3 class="h-fda">FDA Classification &amp; Pathway</h3>
+
+      <label for="fdaIntendedUse">1. Primary intended use</label>
+      <select id="fdaIntendedUse">
+        <option value="">— Select —</option>
+        <option value="diagnosis">Diagnosis or screening</option>
+        <option value="treatment">Treatment or therapy</option>
+        <option value="monitoring">Monitoring physiological parameters</option>
+        <option value="decision-support">Supporting clinical decision / information</option>
+        <option value="other">Other / general hospital use</option>
+      </select>
+
+      <label>2. Sustains/supports life, or of substantial importance in preventing impairment of health?</label>
+      <div class="choice-row">
+        <label><input type="radio" name="fdaLifeSustaining" value="yes"> Yes</label>
+        <label><input type="radio" name="fdaLifeSustaining" value="no" checked> No</label>
+      </div>
+
+      <label>3. Potential for unreasonable risk of illness or injury</label>
+      <div class="choice-row">
+        <label><input type="radio" name="fdaRisk" value="high"> High (serious injury / death possible)</label>
+        <label><input type="radio" name="fdaRisk" value="moderate" checked> Moderate</label>
+        <label><input type="radio" name="fdaRisk" value="low"> Low</label>
+      </div>
+
+      <label>4. Legally marketed predicate with same intended use &amp; technological characteristics?</label>
+      <div class="choice-row">
+        <label><input type="radio" name="fdaPredicate" value="yes"> Yes / substantial equivalence likely</label>
+        <label><input type="radio" name="fdaPredicate" value="no" checked> No / novel</label>
+        <label><input type="radio" name="fdaPredicate" value="unsure"> Unsure</label>
+      </div>
+
+      <label>5. Device flags</label>
+      <div class="choice-col">
+        <label><input type="checkbox" id="fdaImplant"> Implantable</label>
+        <label><input type="checkbox" id="fdaLifeSupport"> Life-supporting or life-sustaining</label>
+        <label><input type="checkbox" id="fdaSoftware"> Software / SaMD / AI-enabled</label>
+        <label><input type="checkbox" id="fdaIVD"> In vitro diagnostic</label>
+        <label><input type="checkbox" id="fdaRadiation"> Emits radiation</label>
+      </div>
+
+      <div class="note" style="margin-top:12px">
+        <strong>FDA Product Code &amp; Regulation Number</strong><br>
+        After estimating class/pathway, look up the official product code and 21 CFR regulation number in the FDA Product Classification database. That determines the exact controls, exemptions and guidance.
+        <div class="links" style="margin-top:6px">
+          <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPCD/classification.cfm" target="_blank" rel="noopener">FDA Product Classification Database</a>
+          <a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/how-study-and-market-your-device" target="_blank" rel="noopener">How to Study &amp; Market Your Device</a>
+          <a href="https://www.fda.gov/medical-devices/premarket-submissions-selecting-and-preparing-correct-submission/premarket-notification-510k" target="_blank" rel="noopener">Selecting the Correct Submission</a>
+        </div>
+      </div>
+
+      <button class="btn" id="btnRunFda">Calculate FDA class &amp; pathway</button>
+      <button class="btn btn-ghost" id="btnResetFda">Reset</button>
+      <div id="fdaResult" class="result" style="display:none"></div>
+    </div>
+
+    <!-- ---------- EU MDR engine ---------- -->
+    <div id="euBlock" style="display:none">
+      <h3 class="h-eu">EU MDR Classification (Annex VIII — incl. Rules 6/7/8)</h3>
+
+      <label>Device category</label>
+      <div class="choice-row">
+        <label><input type="radio" name="euCategory" value="general" checked> General device</label>
+        <label><input type="radio" name="euCategory" value="software"> Software / SaMD / MDSW (incl. AI)</label>
+      </div>
+
+      <!-- General (hardware) questions -->
+      <div id="euGeneralQuestions">
+        <label>Invasiveness</label>
+        <div class="choice-row">
+          <label><input type="radio" name="euInvasiveness" value="non-invasive" checked> Non-invasive</label>
+          <label><input type="radio" name="euInvasiveness" value="orifice"> Body orifice (non-surgical)</label>
+          <label><input type="radio" name="euInvasiveness" value="surgical"> Surgically invasive</label>
+        </div>
+
+        <label for="euDuration">Duration of continuous use</label>
+        <select id="euDuration">
+          <option value="transient">Transient (&lt; 60 min)</option>
+          <option value="short-term">Short-term (60 min – 30 days)</option>
+          <option value="long-term">Long-term (&gt; 30 days)</option>
+        </select>
+
+        <label>Active device?</label>
+        <div class="choice-row">
+          <label><input type="radio" name="euActive" value="no" checked> No</label>
+          <label><input type="radio" name="euActive" value="yes"> Yes</label>
+        </div>
+      </div>
+
+      <!-- Software (Rule 11) questions -->
+      <div id="euSoftwareQuestions" style="display:none">
+        <div class="note"><strong>Rule 11 + AI:</strong> class follows the intended purpose and the ceiling of clinical harm if the output is wrong. The algorithm type does not change the class, and human-in-the-loop does not automatically lower it. See MDCG 2019-11 and the IMDRF SaMD framework.</div>
+        <label for="euSoftwarePurpose">Software purpose</label>
+        <select id="euSoftwarePurpose">
+          <option value="">—</option>
+          <option value="diagnosis">Information for diagnosis or therapeutic decisions</option>
+          <option value="monitoring">Monitors physiological processes</option>
+          <option value="drives-hardware">Drives / influences a hardware device</option>
+          <option value="other">Other software</option>
+        </select>
+        <label for="euSoftwareImpact">Impact of incorrect output</label>
+        <select id="euSoftwareImpact">
+          <option value="">—</option>
+          <option value="death">Death or irreversible deterioration → III</option>
+          <option value="serious">Serious deterioration or surgical intervention → IIb</option>
+          <option value="lower">Lower impact → IIa</option>
+        </select>
+        <label>Vital parameters with possible immediate danger?</label>
+        <div class="choice-row">
+          <label><input type="radio" name="euVitalParams" value="no" checked> No</label>
+          <label><input type="radio" name="euVitalParams" value="yes"> Yes → IIb</label>
+        </div>
+      </div>
+
+      <label>Characteristics — Rules 2–22 (including 6/7/8 exceptions)</label>
+      <div class="choice-col checklist-scroll">
+        <label><input type="checkbox" data-rule="r2"> R2 — Channels/stores blood or body liquids</label>
+        <label><input type="checkbox" data-rule="r3"> R3 — Modifies composition of blood/body liquids</label>
+        <label><input type="checkbox" data-rule="r4b"> R4 — Injured skin, secondary intent → IIb</label>
+        <label><input type="checkbox" data-rule="r4a"> R4 — Injured skin, mechanical barrier → I</label>
+        <label><input type="checkbox" data-rule="r9b"> R9 — Active therapeutic, potentially hazardous energy → IIb</label>
+        <label><input type="checkbox" data-rule="r9a"> R9 — Active therapeutic, energy → IIa</label>
+        <label><input type="checkbox" data-rule="r9c"> R9 — Controls/monitors Class IIb active therapeutic → IIb</label>
+        <label><input type="checkbox" data-rule="r10d"> R10 — Ionising radiation (diagnosis/therapy) → IIb</label>
+        <label><input type="checkbox" data-rule="r10c"> R10 — Diagnosis or monitoring of vital processes → IIa/IIb</label>
+        <label><input type="checkbox" data-rule="r10a"> R10 — Supplies energy absorbed by the body → IIa</label>
+        <label><input type="checkbox" data-rule="r12b"> R12 — Administers substances in a hazardous manner → IIb</label>
+        <label><input type="checkbox" data-rule="r12a"> R12 — Administers/removes medicines or body liquids → IIa</label>
+        <label><input type="checkbox" data-rule="r13"> R13 — Medicinal substance or blood derivative → III</label>
+        <label><input type="checkbox" data-rule="r14"> R14 — Contraception or prevention of STD</label>
+        <label><input type="checkbox" data-rule="r15"> R15 — Disinfecting/sterilising devices or contact-lens care</label>
+        <label><input type="checkbox" data-rule="r16"> R16 — Recording of X-ray diagnostic images → IIa</label>
+        <label><input type="checkbox" data-rule="r17"> R17 — Non-viable human/animal tissues → III</label>
+        <label><input type="checkbox" data-rule="heart"> Direct contact with heart or central circulatory system → III (R6/7/8)</label>
+        <label><input type="checkbox" data-rule="cns"> Direct contact with central nervous system → III (R6/7/8)</label>
+        <label><input type="checkbox" data-rule="ion"> Supplies ionising radiation → IIb (R6/7)</label>
+        <label><input type="checkbox" data-rule="bio"> Biological effect or wholly/mainly absorbed → IIb/III</label>
+        <label><input type="checkbox" data-rule="chem"> Chemical change in the body (except teeth) or administers medicines → IIb/III</label>
+        <label><input type="checkbox" data-rule="reuse"> Reusable surgical instrument (transient) → I (R6)</label>
+        <label><input type="checkbox" data-rule="implant"> Implantable device</label>
+        <label><input type="checkbox" data-rule="aid"> Active implantable device or accessory → III</label>
+        <label><input type="checkbox" data-rule="breast"> Breast implant or surgical mesh → III</label>
+        <label><input type="checkbox" data-rule="joint"> Total or partial joint replacement → III</label>
+        <label><input type="checkbox" data-rule="spine"> Spinal disc replacement or spinal-column contact → III</label>
+        <label><input type="checkbox" data-rule="teeth"> Intended to be placed in the teeth → IIa</label>
+        <label><input type="checkbox" data-rule="cyber"> Cybersecurity relevant (GSPR 17.2/17.3)</label>
+        <label><input type="checkbox" data-rule="hf"> Significant human factors / lay-user aspects</label>
+      </div>
+
+      <button class="btn" id="btnRunEu">Calculate EU MDR class</button>
+      <button class="btn btn-ghost" id="btnResetEu">Reset</button>
+      <div id="euResult" class="result" style="display:none"></div>
+    </div>
+
+    <!-- ---------- Side-by-side comparison ---------- -->
+    <div id="compareBlock" style="display:none">
+      <h3>Side-by-side &amp; Divergence Summary</h3>
+      <p class="sm">Run both engines above, then review the comparison.</p>
+      <div class="cols">
+        <div class="note" id="compareFdaBox"><strong class="h-fda">FDA</strong><br>Not yet calculated</div>
+        <div class="note" id="compareEuBox"><strong class="h-eu">EU MDR</strong><br>Not yet calculated</div>
+      </div>
+      <div id="compareResult" class="result" style="display:none;margin-top:10px"></div>
+      <button class="btn" id="btnCompare">Refresh comparison</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SaMD / AI ================= -->
+<section id="samd" class="panel">
+  <div class="card">
+    <h2>SaMD / AI <span class="badge">IMDRF + FDA + MDR</span></h2>
+    <p class="sm">The IMDRF risk framework is the common language. Map the result to the FDA pathway and MDR Rule 11.</p>
+
+    <label for="samdSignificance">Significance of the information provided by the software</label>
+    <select id="samdSignificance">
+      <option value="">—</option>
+      <option value="treat">Treat or diagnose</option>
+      <option value="drive">Drive clinical management</option>
+      <option value="inform">Inform clinical management</option>
+    </select>
+
+    <label for="samdState">State of the healthcare situation or condition</label>
+    <select id="samdState">
+      <option value="">—</option>
+      <option value="critical">Critical</option>
+      <option value="serious">Serious</option>
+      <option value="non-serious">Non-serious</option>
+    </select>
+
+    <label>AI / ML flags</label>
+    <div class="choice-col">
+      <label><input type="checkbox" id="samdUsesAi"> Uses AI / machine learning</label>
+      <label><input type="checkbox" id="samdAdaptive"> Continuously learning / adaptive in the field</label>
+      <label><input type="checkbox" id="samdPccp"> Predetermined Change Control Plan (PCCP) under consideration (FDA)</label>
+    </div>
+
+    <button class="btn" id="btnRunSamd">Evaluate</button>
+    <div id="samdResult" class="result" style="display:none"></div>
+  </div>
+</section>
+
+<!-- ================= EU AI ACT ================= -->
+<section id="aiact" class="panel">
+  <div class="card">
+    <h2>EU AI Act <span class="badge eu">Regulation (EU) 2024/1689</span></h2>
+    <p class="sm">The AI Act applies <em>in addition to</em> the MDR for AI-enabled medical devices. An AI system that is a device (or a safety component of one) requiring Notified Body conformity assessment under the MDR is <strong>high-risk</strong> under Article 6(1).</p>
+
+    <label>Does the product contain an AI system as defined by Article 3(1)?</label>
+    <div class="choice-row">
+      <label><input type="radio" name="aiactHasAi" value="no" checked> No — no AI system</label>
+      <label><input type="radio" name="aiactHasAi" value="yes"> Yes</label>
+    </div>
+
+    <div id="aiactQuestions" style="display:none">
+      <label>Is the AI system the device itself, or a safety component of the device?</label>
+      <div class="choice-row">
+        <label><input type="radio" name="aiactSafety" value="yes" checked> Yes</label>
+        <label><input type="radio" name="aiactSafety" value="no"> No — ancillary function only</label>
+      </div>
+
+      <label>Does the device require Notified Body conformity assessment under the MDR (Class Is/Im/Ir, IIa, IIb or III)?</label>
+      <div class="choice-row">
+        <label><input type="radio" name="aiactNb" value="yes" checked> Yes</label>
+        <label><input type="radio" name="aiactNb" value="no"> No — self-certified Class I</label>
+      </div>
+
+      <label>Provider obligations for high-risk AI (Articles 8–17) — status</label>
+      <div class="choice-col">
+        <label><input type="checkbox" data-aiact="a9"> Art. 9 — Risk management system across the AI lifecycle</label>
+        <label><input type="checkbox" data-aiact="a10"> Art. 10 — Data governance (training, validation, test data quality &amp; bias)</label>
+        <label><input type="checkbox" data-aiact="a11"> Art. 11 — Technical documentation (Annex IV, can be integrated with MDR tech file)</label>
+        <label><input type="checkbox" data-aiact="a12"> Art. 12 — Record-keeping / automatic event logs</label>
+        <label><input type="checkbox" data-aiact="a13"> Art. 13 — Transparency &amp; instructions for deployers</label>
+        <label><input type="checkbox" data-aiact="a14"> Art. 14 — Human oversight measures</label>
+        <label><input type="checkbox" data-aiact="a15"> Art. 15 — Accuracy, robustness &amp; cybersecurity</label>
+        <label><input type="checkbox" data-aiact="a17"> Art. 17 — Quality management system (can extend ISO 13485 QMS)</label>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Key dates:</strong> in force since 1 Aug 2024 · prohibitions apply since 2 Feb 2025 · general high-risk rules (Annex III) from 2 Aug 2026 · high-risk AI embedded in Annex I regulated products — which includes MDR/IVDR devices — from <strong>2 Aug 2027</strong>. Verify current status, as timelines may be amended.
+      <div class="links" style="margin-top:6px">
+        <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener">AI Act (EUR-Lex)</a>
+        <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">EU AI regulatory framework</a>
+        <a href="https://health.ec.europa.eu/medical-devices-sector/guidance-and-useful-information_en" target="_blank" rel="noopener">MDCG Guidance</a>
+      </div>
+    </div>
+
+    <button class="btn" id="btnRunAiAct">Evaluate AI Act status</button>
+    <div id="aiactResult" class="result" style="display:none"></div>
+  </div>
+</section>
+
+<!-- ================= CYBERSECURITY ================= -->
+<section id="cyber" class="panel">
+  <div class="card">
+    <h2>Cybersecurity <span class="badge">FDA + MDR</span></h2>
+
+    <h3 class="h-fda">FDA</h3>
+    <div class="choice-col">
+      <label><input type="checkbox" data-cyber="fda"> Threat model documented</label>
+      <label><input type="checkbox" data-cyber="fda"> Security risk assessment</label>
+      <label><input type="checkbox" data-cyber="fda"> SBOM available</label>
+      <label><input type="checkbox" data-cyber="fda"> Secure design &amp; architecture</label>
+      <label><input type="checkbox" data-cyber="fda"> Authentication / authorization</label>
+      <label><input type="checkbox" data-cyber="fda"> Encryption (at rest &amp; in transit)</label>
+      <label><input type="checkbox" data-cyber="fda"> Vulnerability &amp; patch process</label>
+      <label><input type="checkbox" data-cyber="fda"> Post-market cyber monitoring</label>
+      <label><input type="checkbox" data-cyber="fda"> Coordinated vulnerability disclosure</label>
+    </div>
+
+    <h3 class="h-eu">EU MDR / MDCG 2019-16</h3>
+    <div class="choice-col">
+      <label><input type="checkbox" data-cyber="eu"> GSPR 17.2 / 17.3 addressed</label>
+      <label><input type="checkbox" data-cyber="eu"> IT security requirements for the environment of use</label>
+      <label><input type="checkbox" data-cyber="eu"> Protection against unauthorised access</label>
+      <label><input type="checkbox" data-cyber="eu"> Integrity &amp; authenticity of software and data</label>
+      <label><input type="checkbox" data-cyber="eu"> PMS includes cybersecurity signals</label>
+    </div>
+
+    <button class="btn" id="btnRunCyber">Summarise</button>
+    <div id="cyberResult" class="result" style="display:none"></div>
+  </div>
+</section>
+
+<!-- ================= HUMAN FACTORS ================= -->
+<section id="hf" class="panel">
+  <div class="card">
+    <h2>Human Factors / Usability <span class="badge">FDA + MDR</span></h2>
+    <div class="choice-col">
+      <label><input type="checkbox" data-hf> Intended users, environments &amp; scenarios defined</label>
+      <label><input type="checkbox" data-hf> Critical tasks identified</label>
+      <label><input type="checkbox" data-hf> Use-related risk analysis performed</label>
+      <label><input type="checkbox" data-hf> Formative evaluations conducted</label>
+      <label><input type="checkbox" data-hf> Summative / validation usability testing done or planned</label>
+      <label><input type="checkbox" data-hf> Labelling &amp; training address residual use-related risks</label>
+      <label><input type="checkbox" data-hf> Lay users included where the device is intended for them</label>
+      <label><input type="checkbox" data-hf> (EU) GSPR 5 + IEC 62366-1 evidence ready</label>
+    </div>
+    <button class="btn" id="btnRunHf">Summarise</button>
+    <div id="hfResult" class="result" style="display:none"></div>
+  </div>
+</section>
+
+<!-- ================= GSPR ================= -->
+<section id="gspr" class="panel">
+  <div class="card">
+    <h2>GSPR Matrix <span class="badge eu">EU only</span></h2>
+    <div class="progress-track"><div class="progress-fill" id="gsprBar" style="width:0%"></div></div>
+    <p class="sm" id="gsprStatus">0 / 0</p>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>ID</th><th>Requirement</th><th>App.</th><th>Note</th><th>Status</th></tr></thead>
+        <tbody id="gsprBody"></tbody>
+      </table>
+    </div>
+    <button class="btn" id="btnSaveGspr">Save</button>
+    <button class="btn btn-ghost" id="btnExportGspr">Export CSV</button>
+    <button class="btn btn-ghost" id="btnResetGspr">Reset</button>
+  </div>
+</section>
+
+<!-- ================= EUDAMED ================= -->
+<section id="eudamed" class="panel">
+  <div class="card">
+    <h2>EUDAMED Completeness <span class="badge eu">EU</span></h2>
+    <div class="grid-2">
+      <div><label for="eudamedIssuer">Issuing Entity *</label><select id="eudamedIssuer" data-eudamed="Issuing Entity"><option value="">—</option><option>GS1</option><option>HIBCC</option><option>ICCBBA</option><option>IFA</option></select></div>
+      <div><label for="eudamedBasicUdi">Basic UDI-DI *</label><input type="text" id="eudamedBasicUdi" data-eudamed="Basic UDI-DI"></div>
+      <div><label for="eudamedClass">Risk Class *</label><select id="eudamedClass" data-eudamed="Risk Class"><option value="">—</option><option>I</option><option>Is</option><option>Im</option><option>Ir</option><option>IIa</option><option>IIb</option><option>III</option></select></div>
+      <div><label for="eudamedName">Device Name *</label><input type="text" id="eudamedName" data-eudamed="Device Name"></div>
+      <div><label for="eudamedUdi">UDI-DI *</label><input type="text" id="eudamedUdi" data-eudamed="UDI-DI"></div>
+      <div><label for="eudamedEmdn">EMDN Code *</label><input type="text" id="eudamedEmdn" data-eudamed="EMDN Code"></div>
+      <div><label for="eudamedSingleUse">Single use *</label><select id="eudamedSingleUse" data-eudamed="Single use"><option value="">—</option><option>Yes</option><option>No</option></select></div>
+    </div>
+    <button class="btn" id="btnCheckEudamed">Check</button>
+    <div id="eudamedResult" class="result" style="display:none"></div>
+  </div>
+</section>
+
+<!-- ================= REPORT ================= -->
+<section id="report" class="panel">
+  <div class="card">
+    <h2>Summary Report</h2>
+    <p class="sm">Compiles every module you have run into a single summary. Use Print / PDF to keep a record.</p>
+    <button class="btn" id="btnMakeReport">Generate</button>
+    <button class="btn btn-ghost" id="btnPrintReport">Print / PDF</button>
+    <div id="reportOut" style="margin-top:10px"></div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="panel">
+  <div class="card">
+    <h2>About RegCompass</h2>
+    <p style="font-size:.87rem;margin-bottom:8px">
+      RegCompass is a free, dual-market decision-support toolkit for FDA (US) and EU MDR medical-device requirements. It covers classification, SaMD/AI (IMDRF-aligned), the EU AI Act, cybersecurity, human factors, GSPR and EUDAMED completeness. It does <strong>not</strong> replace professional regulatory advice, FDA interaction or Notified Body assessment.
+    </p>
+
+    <div class="note" style="border-color:var(--color-ok)">
+      <strong>Transparency: no AI inside</strong><br>
+      RegCompass contains <strong>no artificial-intelligence, machine-learning, or third-party AI-assistant code</strong> of any kind — no embedded copilot, chatbot, model API calls, or AI-generated runtime logic. Every result is produced by fixed, human-written decision rules that you can read and audit line-by-line in the open-source code (<code>js/app.js</code>). The app runs entirely on your device, works offline, and collects or transmits no data. This applies to the build and packaging scripts too (<code>electron/main.js</code>, <code>scripts/make-www.js</code>, the GitHub Actions workflows) — there is no AI anywhere in the toolchain that ships to users.
+    </div>
+
+    <div class="note" style="border-color:var(--color-eu)">
+      <strong>Limitation of liability</strong><br>
+      No liability is accepted for decisions made using this tool. Classification, pathway selection and compliance remain the sole responsibility of the manufacturer. Results are preliminary. Always verify against official FDA resources, EUR-Lex, current MDCG guidance, IMDRF documents and EUDAMED.
+    </div>
+
+    <h3>Official sources</h3>
+    <div class="links">
+      <a href="https://www.fda.gov/medical-devices" target="_blank" rel="noopener">FDA Medical Devices</a>
+      <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPCD/classification.cfm" target="_blank" rel="noopener">FDA Product Classification</a>
+      <a href="https://www.fda.gov/medical-devices/digital-health-center-excellence/software-medical-device-samd" target="_blank" rel="noopener">FDA SaMD</a>
+      <a href="https://www.fda.gov/medical-devices/digital-health-center-excellence/cybersecurity" target="_blank" rel="noopener">FDA Cybersecurity</a>
+      <a href="https://eur-lex.europa.eu/eli/reg/2017/745/oj" target="_blank" rel="noopener">EU MDR</a>
+      <a href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj" target="_blank" rel="noopener">EU AI Act</a>
+      <a href="https://health.ec.europa.eu/medical-devices-sector/guidance-and-useful-information_en" target="_blank" rel="noopener">MDCG Guidance</a>
+      <a href="https://www.imdrf.org" target="_blank" rel="noopener">IMDRF</a>
+      <a href="https://ec.europa.eu/tools/eudamed/eudamed" target="_blank" rel="noopener">EUDAMED</a>
+    </div>
+
+    <h3 style="margin-top:12px">Install as an app</h3>
+    <p class="sm">RegCompass is an installable web app (PWA). On phones use “Add to Home Screen”; on desktop Chrome/Edge use the install icon in the address bar.</p>
+
+    <h3>Windows desktop app</h3>
+    <p class="sm">No install needed to try it — the portable build runs directly. The installer adds a Start Menu shortcut and auto-updates in place.</p>
+    <div class="links">
+      <a href="https://github.com/rajeevyadav/regcompass/releases/latest/download/RegCompass-Setup.exe" target="_blank" rel="noopener">⬇ Download installer (.exe)</a>
+      <a href="https://github.com/rajeevyadav/regcompass/releases/latest/download/RegCompass-Portable.exe" target="_blank" rel="noopener">⬇ Download portable (.exe)</a>
+      <a href="https://github.com/rajeevyadav/regcompass/releases" target="_blank" rel="noopener">All releases &amp; version history</a>
+    </div>
+    <p class="sm" style="margin-top:6px">The .exe is unsigned (code-signing certificates are a paid service), so Windows SmartScreen may show “Windows protected your PC” the first time. Click <strong>More info → Run anyway</strong>. Verify you downloaded from <code>github.com/rajeevyadav/regcompass</code> before doing so.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  RegCompass · FDA + EU MDR decision-support · No AI inside — 100% auditable rule-based logic · Does not create compliance · Verify against official sources
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>

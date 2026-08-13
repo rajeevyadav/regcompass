@@ -1,0 +1,35 @@
+# ============================================================
+# Static security scanning (CodeQL)
+# ------------------------------------------------------------
+# Free for public repos. Scans app.js, main.js and any future
+# JS/TS for common vulnerability patterns on every push/PR to
+# main and on a weekly schedule. Results appear under the
+# repo's Security > Code scanning alerts tab.
+# ============================================================
+
+name: CodeQL
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "0 6 * * 1"   # weekly, Monday 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+
+      - uses: github/codeql-action/analyze@v3
