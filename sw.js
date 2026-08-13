@@ -9,7 +9,7 @@
 
 'use strict';
 
-const CACHE_VERSION = 'regcompass-v1.0.2';
+const CACHE_VERSION = 'regcompass-v1.0.3';
 
 const APP_FILES = [
   './',

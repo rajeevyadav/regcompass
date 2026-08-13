@@ -640,7 +640,7 @@ function makeReport() {
   if (results.gspr) html += `<p><strong>GSPR:</strong> ${results.gspr.done}/${results.gspr.applicable} (${results.gspr.pct}%)</p>`;
 
   html += `<hr style="border:none;border-top:1px solid var(--color-border);margin:8px 0">
-    <p class="sm">Decision-support only. The manufacturer remains solely responsible for classification, pathway and compliance. Verify against FDA resources, EUR-Lex, MDCG guidance and EUDAMED.</p></div>`;
+    <p class="sm">Decision-support only, provided "as is". This report may contain errors and is not a substitute for professional regulatory advice. The manufacturer remains solely responsible for classification, pathway and compliance. Verify against FDA resources, EUR-Lex, MDCG guidance and EUDAMED.</p></div>`;
 
   $('reportOut').innerHTML = html;
 }
