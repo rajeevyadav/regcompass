@@ -1,7 +1,7 @@
 {
   "name": "regcompass",
   "productName": "RegCompass",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "RegCompass — free FDA & EU MDR regulatory navigator for medical devices. Rule-based, offline, no AI, no data collection.",
   "author": "Rajeev Yadav <rajeevyadav@gmail.com>",
   "license": "MIT",
