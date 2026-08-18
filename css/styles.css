@@ -481,8 +481,33 @@ footer {
 
 /* ---------- 13. Print (Report → PDF) ---------- */
 @media print {
-  .top, .nav, .btn, .btn-ghost, footer, .market, .install-hint { display: none !important; }
+  .top, .nav, .btn, .btn-ghost, footer, .market, .install-hint, .to-top { display: none !important; }
   body { background: #fff; color: #111; }
   .card { border: 1px solid #ccc; background: #fff; color: #111; box-shadow: none; }
   .panel { display: block !important; }
 }
+
+/* Back-to-top button — fixed, appears after scrolling; works in both themes
+   via the color tokens above. */
+.to-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 200;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-card);
+}
+.to-top:hover { border-color: var(--color-primary); }
+.to-top:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.to-top.show { display: inline-flex; }

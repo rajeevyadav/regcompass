@@ -70,12 +70,22 @@ $('themeToggle').addEventListener('click', () => {
   applyTheme(next);
 });
 
-/* Restore saved theme, otherwise follow the OS preference. */
+/* Restore saved theme, otherwise default to light (dark only via the toggle). */
 (() => {
   let saved = null;
   try { saved = localStorage.getItem(THEME_KEY); } catch { /* ignore */ }
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme(saved ?? (prefersDark ? 'dark' : 'light'));
+  applyTheme(saved ?? 'light');
+})();
+
+/* Back-to-top button: the page can get long, so offer a persistent way back to
+   the top. Appears once scrolled down; styled via theme tokens (both modes). */
+(() => {
+  const btn = document.getElementById('toTop');
+  if (!btn) return;
+  const onScroll = () => btn.classList.toggle('show', window.scrollY > 400);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 })();
 
 /* Market selector: which classification engine(s) are visible. */
