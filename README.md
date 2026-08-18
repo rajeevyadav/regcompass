@@ -5,6 +5,8 @@
 [![Open the app](https://img.shields.io/badge/Open-web%20%2F%20mobile%20app-8250df)](https://rajeevyadav.github.io/regcompass/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
+_Last updated: **2026-08-18** · Next regulatory review: **2026-11-18** (see [NEXT_REVIEW.md](NEXT_REVIEW.md))_
+
 **Free FDA & EU MDR regulatory navigator for medical devices.**
 Classification, SaMD/AI, EU AI Act, cybersecurity, human factors, GSPR and EUDAMED readiness — in one offline app that runs in any browser, installs on Android and iPhone, and ships as a Windows desktop app.
 
