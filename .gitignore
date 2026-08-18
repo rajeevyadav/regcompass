@@ -9,6 +9,14 @@ www/
 android/
 ios/
 
+# Internal process artifacts — NEVER commit to this PUBLIC repo.
+# Directives (D-NNN) and reports (R-NNN) hold internal decision-making and must
+# stay local only (carried over from CyberCompass conventions).
+/reports/
+/directives/
+R-[0-9]*.md
+D-[0-9]*.md
+
 # OS noise
 .DS_Store
 Thumbs.db
