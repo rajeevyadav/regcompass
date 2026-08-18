@@ -7,6 +7,8 @@
 
 _Last updated: **2026-08-18** · Next regulatory review: **2026-11-18** (see [NEXT_REVIEW.md](NEXT_REVIEW.md))_
 
+🌐 **Use it now in your browser: https://rajeevyadav.github.io/regcompass/**
+
 **Free FDA & EU MDR regulatory navigator for medical devices.**
 Classification, SaMD/AI, EU AI Act, cybersecurity, human factors, GSPR and EUDAMED readiness — in one offline app that runs in any browser, installs on Android and iPhone, and ships as a Windows desktop app.
 
@@ -33,7 +35,7 @@ RegCompass contains **no artificial-intelligence or machine-learning code**. Eve
 
 **In the browser / install on your phone (free, no app store needed)**
 
-1. Open the GitHub Pages site (see *Publishing* below).
+1. Open **https://rajeevyadav.github.io/regcompass/** in any browser.
 2. Android (Chrome): menu → **Add to Home Screen** → it installs like a normal app and works offline.
 3. iPhone (Safari): Share → **Add to Home Screen**.
 4. Desktop Chrome/Edge: click the install icon in the address bar.
