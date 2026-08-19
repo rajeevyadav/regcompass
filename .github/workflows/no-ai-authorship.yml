@@ -1,0 +1,33 @@
+# Guardrail: commits must be authored solely by the maintainer — no AI
+# authorship, no Co-Authored-By/Generated-with trailers. Fails the build if a
+# pushed commit carries AI author/committer identity or an AI co-author trailer.
+name: No AI authorship
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  scan-authorship:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject AI authorship / co-author trailers
+        run: |
+          set -e
+          BEFORE="${{ github.event.before }}"
+          if [ -n "$BEFORE" ] && git rev-parse "$BEFORE" >/dev/null 2>&1; then
+            RANGE="$BEFORE..${{ github.sha }}"
+          else
+            RANGE="HEAD~1..HEAD"
+          fi
+          if git log "$RANGE" --format='AUTHOR:%an <%ae>%nCOMMITTER:%cn <%ce>%n%b' \
+             | grep -Ei 'anthropic\.com|noreply@anthropic|co-authored-by:[[:space:]]*(claude|anthropic)|generated with[[:space:]]+(\[?claude|anthropic)|\bclaude (code|opus|sonnet|haiku)\b'; then
+            echo "::error::A commit carries AI authorship / co-author metadata. Commits must be authored solely by the maintainer."
+            exit 1
+          fi
+          echo "No AI authorship/co-author metadata in the pushed commits."
