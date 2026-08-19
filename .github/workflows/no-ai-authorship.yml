@@ -1,6 +1,7 @@
-# Guardrail: commits must be authored solely by the maintainer — no AI
-# authorship, no Co-Authored-By/Generated-with trailers. Fails the build if a
-# pushed commit carries AI author/committer identity or an AI co-author trailer.
+# Guardrail: commits must be authored solely by the maintainer. No AI assistant
+# authorship or co-author trailers (Claude, ChatGPT/OpenAI, Copilot, Gemini,
+# Cursor, Codeium, etc.). Fails the build if a pushed commit carries an AI
+# author/committer identity or an AI Co-Authored-By / Generated-with trailer.
 name: No AI authorship
 
 on:
@@ -25,9 +26,16 @@ jobs:
           else
             RANGE="HEAD~1..HEAD"
           fi
-          if git log "$RANGE" --format='AUTHOR:%an <%ae>%nCOMMITTER:%cn <%ce>%n%b' \
-             | grep -Ei 'anthropic\.com|noreply@anthropic|co-authored-by:[[:space:]]*(claude|anthropic)|generated with[[:space:]]+(\[?claude|anthropic)|\bclaude (code|opus|sonnet|haiku)\b'; then
-            echo "::error::A commit carries AI authorship / co-author metadata. Commits must be authored solely by the maintainer."
+          # Author/committer identity must not be an AI assistant / AI provider.
+          IDENT='anthropic\.com|openai\.com|noreply@anthropic|(^|[^a-z])(claude|chatgpt|copilot|codeium|cursor ai)([^a-z]|$)|github-copilot'
+          if git log "$RANGE" --format='%an <%ae>%n%cn <%ce>' | grep -Ei "$IDENT"; then
+            echo "::error::A commit author/committer is an AI assistant/provider identity. Commits must be authored solely by the maintainer."
+            exit 1
+          fi
+          # Co-author / generated-with trailers naming an AI tool are forbidden.
+          TRAILER='co-authored-by:[[:space:]]*(claude|anthropic|openai|chatgpt|gpt-|copilot|gemini|bard|cursor|codeium)|generated with[[:space:]]+(\[?claude|chatgpt|openai|copilot|gemini|cursor|codeium)|noreply@anthropic|anthropic\.com|openai\.com'
+          if git log "$RANGE" --format='%B' | grep -Ei "$TRAILER"; then
+            echo "::error::A commit carries an AI co-author / generated-with trailer. Remove AI attribution."
             exit 1
           fi
           echo "No AI authorship/co-author metadata in the pushed commits."
