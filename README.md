@@ -88,6 +88,13 @@ When you change any app file, bump `CACHE_VERSION` in `sw.js` so installed PWAs 
 
 Full step-by-step instructions (GitHub Pages, cutting a release so the exe builds itself, and app-store publishing) are in [`docs/PUBLISHING.md`](docs/PUBLISHING.md).
 
+## Family
+
+Part of the same family — same guardrails, same offline-first, no-black-box-AI philosophy:
+[CyberCompass](https://rajeevyadav.github.io/cybercompass/) ·
+[eIFUCompass](https://rajeevyadav.github.io/eifucompass/) ·
+[ClinicalCompass](https://rajeevyadav.github.io/clinicalcompass/).
+
 ## License
 
 [MIT](LICENSE) — with the reminder that regulatory compliance remains solely the manufacturer's responsibility.
