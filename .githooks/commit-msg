@@ -1,0 +1,9 @@
+#!/bin/sh
+# Guardrail: reject any AI authorship / co-author trailer in commit messages.
+# Enable once per clone:  git config core.hooksPath .githooks
+msg_file="$1"
+if grep -Eiq 'co-authored-by:[[:space:]]*(claude|anthropic)|generated with[[:space:]]+(\[?claude|anthropic)|noreply@anthropic|anthropic\.com|\bclaude (code|opus|sonnet|haiku)\b' "$msg_file"; then
+  echo "commit-msg hook: refusing commit — AI authorship/co-author trailer detected." >&2
+  exit 1
+fi
+exit 0
