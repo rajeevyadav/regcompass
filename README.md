@@ -1,5 +1,7 @@
 # RegCompass
 
+**FDA & EU MDR Regulatory Navigator for medical devices**
+
 [![Latest release](https://img.shields.io/github/v/release/rajeevyadav/regcompass?label=version&color=2ea44f&cacheSeconds=300)](https://github.com/rajeevyadav/regcompass/releases/latest)
 [![Download for Windows](https://img.shields.io/badge/Download-Windows%20installer-0078d6?logo=windows)](https://github.com/rajeevyadav/regcompass/releases/latest/download/RegCompass-Setup.exe)
 [![Open the app](https://img.shields.io/badge/Open-web%20%2F%20mobile%20app-8250df)](https://rajeevyadav.github.io/regcompass/)
@@ -9,16 +11,13 @@ _Last updated: **2026-08-18** · Next regulatory review: **2026-11-18** (see [NE
 
 🌐 **Use it now in your browser: https://rajeevyadav.github.io/regcompass/**
 
-**Free FDA & EU MDR regulatory navigator for medical devices.**
-Classification, SaMD/AI, EU AI Act, cybersecurity, human factors, GSPR and EUDAMED readiness — in one offline app that runs in any browser, installs on Android and iPhone, and ships as a Windows desktop app.
+RegCompass is a free, offline decision-support navigator for **FDA** and **EU MDR**:
+classification, SaMD/AI, the EU AI Act, cybersecurity, human factors, GSPR and EUDAMED
+readiness — in one app that runs in any browser, installs on Android and iPhone, and ships
+as a Windows desktop app. Deterministic, rule-based and fully auditable: **no AI in the
+compliance logic**.
 
-> **Decision-support only.** RegCompass does not create compliance and does not replace professional regulatory advice, FDA interaction or Notified Body assessment. Always verify against official sources (FDA, EUR-Lex, MDCG, IMDRF, EUDAMED).
-
-## No AI inside
-
-RegCompass contains **no artificial-intelligence or machine-learning code**. Every result is produced by fixed, human-written decision rules that anyone can read and audit in [`js/app.js`](js/app.js). The app runs entirely on your device, works offline, and collects or transmits no data. (The EU AI Act module *assesses* AI-enabled devices — the app itself uses no AI.)
-
-## Modules
+## Features
 
 | Module | Markets | What it does |
 |---|---|---|
@@ -31,48 +30,39 @@ RegCompass contains **no artificial-intelligence or machine-learning code**. Eve
 | EUDAMED | EU | Core UDI/device data completeness check |
 | Report | Both | One-page summary of every module you ran, printable to PDF |
 
-## Use it
+## Coverage
+
+FDA and EU MDR. Decision-support only — it does not create compliance and does not replace
+professional regulatory advice, FDA interaction or Notified Body assessment. Always verify
+against official sources (FDA, EUR-Lex, MDCG, IMDRF, EUDAMED).
+
+## How to use
 
 **In the browser / install on your phone (free, no app store needed)**
 
 1. Open **https://rajeevyadav.github.io/regcompass/** in any browser.
-2. Android (Chrome): menu → **Add to Home Screen** → it installs like a normal app and works offline.
+2. Android (Chrome): menu → **Add to Home Screen** — it installs like a normal app and
+   works offline.
 3. iPhone (Safari): Share → **Add to Home Screen**.
 4. Desktop Chrome/Edge: click the install icon in the address bar.
 
 **Windows desktop (.exe)**
 
-Download `RegCompass-Setup-x.y.z.exe` (installer) or `RegCompass-Portable-x.y.z.exe` (no install needed) from the [Releases](../../releases) page.
+Download **RegCompass-Setup.exe** (installer) or **RegCompass-Portable.exe** (no install)
+from the [latest release](https://github.com/rajeevyadav/regcompass/releases/latest). The
+installer is currently **unsigned** — on the SmartScreen prompt choose
+**"More info → Run anyway"**, and confirm the download came from
+`github.com/rajeevyadav/regcompass`.
 
-**Play Store / App Store**
+## Run & build
 
-The repo includes Capacitor scaffolding for native builds — see [`docs/PUBLISHING.md`](docs/PUBLISHING.md).
-
-## Project structure
-
-```
-regcompass/
-├── index.html              ← the app (single page, all modules)
-├── css/styles.css          ← clinical light theme + dark theme (CSS variables)
-├── js/app.js               ← all logic — commented, auditable, no AI, no network
-├── manifest.webmanifest    ← PWA install metadata
-├── sw.js                   ← service worker (offline cache)
-├── icons/                  ← app icons + generator script (make_icons.py)
-├── electron/main.js        ← Windows/desktop shell
-├── build/icon.ico          ← Windows exe icon
-├── scripts/make-www.js     ← assembles www/ for Capacitor mobile builds
-├── capacitor.config.json   ← native Android/iOS wrapper config
-├── .github/workflows/      ← auto-builds the Windows exe on every version tag
-└── docs/PUBLISHING.md      ← step-by-step: GitHub Pages, releases, app stores
-```
-
-## Development
-
-No build step. Edit `index.html`, `css/styles.css` or `js/app.js` and refresh.
+No build step for the web version — edit `index.html`, `css/styles.css` or `js/app.js` and
+refresh. The desktop app is a thin [Electron](https://www.electronjs.org/) wrapper that
+loads the same `index.html`.
 
 ```bash
-# run the web app locally
-npx serve .            # or: python3 -m http.server
+# run the web app locally (a service worker needs http, not file://)
+npx serve .            # or:  python3 -m http.server
 
 # run the desktop app
 npm install
@@ -82,11 +72,33 @@ npm start
 npm run dist:win
 ```
 
-When you change any app file, bump `CACHE_VERSION` in `sw.js` so installed PWAs pick up the update.
+When you change any app file, bump `CACHE_VERSION` in `sw.js` so installed PWAs pick up the
+update. Full publishing steps (GitHub Pages, cutting a release so the exe builds itself, and
+app-store builds via the bundled Capacitor scaffolding) are in
+[`docs/PUBLISHING.md`](docs/PUBLISHING.md).
 
-## Publishing
+## No AI inside
 
-Full step-by-step instructions (GitHub Pages, cutting a release so the exe builds itself, and app-store publishing) are in [`docs/PUBLISHING.md`](docs/PUBLISHING.md).
+The shipped page and its build tooling contain **no AI or machine-learning code** —
+every result is produced by fixed, human-written rules you can read in this repository's
+source ([`js/app.js`](js/app.js)). The app runs entirely on your device, works offline, and
+transmits nothing. CI guardrails fail the build if an AI-provider reference, an ML
+dependency, or an AI/bot commit-authorship trailer is ever introduced. (The EU AI Act
+module *assesses* AI-enabled devices — the app itself uses no AI.)
+
+## Verification
+
+Every citation and link is checked against its primary official source; the audit trail
+lives in [`verification/log.md`](verification/log.md). Sources move over time, so a lighter
+review runs quarterly — see [`NEXT_REVIEW.md`](NEXT_REVIEW.md) (next due **2026-11-18**,
+synchronised across the family). No silent edits — every change is reviewed and logged.
+
+## Disclaimer
+
+Decision-support only — provided "as is". RegCompass does not create compliance and does not
+replace professional regulatory advice, FDA interaction or Notified Body assessment.
+Classification and compliance remain solely the manufacturer's responsibility. Always verify
+against the current official sources (FDA, EUR-Lex, MDCG, IMDRF, EUDAMED).
 
 ## Family
 
@@ -97,4 +109,7 @@ Part of the same family — same guardrails, same offline-first, no-black-box-AI
 
 ## License
 
-[MIT](LICENSE) — with the reminder that regulatory compliance remains solely the manufacturer's responsibility.
+MIT — see [`LICENSE`](LICENSE). Regulatory compliance remains solely the manufacturer's
+responsibility.
+
+Maintainer: **Rajeev Yadav** · rajeevyadav@gmail.com
