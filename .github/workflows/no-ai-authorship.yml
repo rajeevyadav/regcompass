@@ -1,7 +1,7 @@
-# Guardrail: commits must be authored solely by the maintainer. No AI assistant
-# authorship or co-author trailers (Claude, ChatGPT/OpenAI, Copilot, Gemini,
-# Cursor, Codeium, etc.). Fails the build if a pushed commit carries an AI
-# author/committer identity or an AI Co-Authored-By / Generated-with trailer.
+# Guardrail: commits must be authored solely by the maintainer. Rejects (a) any
+# AI assistant authorship/co-author trailer (Claude, ChatGPT/OpenAI, Copilot,
+# Gemini, Cursor, Codeium) and (b) any automation-bot author (Renovate,
+# Dependabot, github-actions, or any *[bot] identity). Fails the build on a match.
 name: No AI authorship
 
 on:
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Reject AI authorship / co-author trailers
+      - name: Reject AI / bot authorship and co-author trailers
         run: |
           set -e
           BEFORE="${{ github.event.before }}"
@@ -26,16 +26,22 @@ jobs:
           else
             RANGE="HEAD~1..HEAD"
           fi
-          # Author/committer identity must not be an AI assistant / AI provider.
-          IDENT='anthropic\.com|openai\.com|noreply@anthropic|(^|[^a-z])(claude|chatgpt|copilot|codeium|cursor ai)([^a-z]|$)|github-copilot'
-          if git log "$RANGE" --format='%an <%ae>%n%cn <%ce>' | grep -Ei "$IDENT"; then
-            echo "::error::A commit author/committer is an AI assistant/provider identity. Commits must be authored solely by the maintainer."
+          # (a) Author/committer must not be an AI assistant/provider identity.
+          AI='anthropic\.com|openai\.com|noreply@anthropic|(^|[^a-z])(claude|chatgpt|copilot|codeium|cursor ai)([^a-z]|$)|github-copilot'
+          if git log "$RANGE" --format='%an <%ae>%n%cn <%ce>' | grep -Ei "$AI"; then
+            echo "::error::A commit author/committer is an AI assistant/provider identity."
             exit 1
           fi
-          # Co-author / generated-with trailers naming an AI tool are forbidden.
-          TRAILER='co-authored-by:[[:space:]]*(claude|anthropic|openai|chatgpt|gpt-|copilot|gemini|bard|cursor|codeium)|generated with[[:space:]]+(\[?claude|chatgpt|openai|copilot|gemini|cursor|codeium)|noreply@anthropic|anthropic\.com|openai\.com'
+          # (b) Author must not be an automation bot (Renovate/Dependabot/*[bot]).
+          BOT='\[bot\]|(^|[^a-z])(renovate|dependabot)([^a-z]|$)|renovatebot|@renovate|@dependabot|github-actions'
+          if git log "$RANGE" --format='%an <%ae>' | grep -Ei "$BOT"; then
+            echo "::error::A commit is authored by an automation bot. Only the maintainer may author commits."
+            exit 1
+          fi
+          # (c) No AI co-author / generated-with trailers.
+          TRAILER='co-authored-by:[[:space:]]*(claude|anthropic|openai|chatgpt|gpt-|copilot|gemini|bard|cursor|codeium|renovate|dependabot)|generated with[[:space:]]+(\[?claude|chatgpt|openai|copilot|gemini|cursor|codeium)|noreply@anthropic|anthropic\.com|openai\.com'
           if git log "$RANGE" --format='%B' | grep -Ei "$TRAILER"; then
-            echo "::error::A commit carries an AI co-author / generated-with trailer. Remove AI attribution."
+            echo "::error::A commit carries an AI/bot co-author or generated-with trailer."
             exit 1
           fi
-          echo "No AI authorship/co-author metadata in the pushed commits."
+          echo "Clean — no AI/bot authorship or co-author metadata in the pushed commits."
